@@ -1,0 +1,3 @@
+pickle db'ye yazarız
+service uuid sorgular
+probability döner
