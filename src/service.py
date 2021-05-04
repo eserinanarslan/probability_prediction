@@ -41,15 +41,8 @@ app = Flask(__name__)
 api = Api(app)
 
 class ProbabilityPrediction(Resource):
-    
-    def __init__(self):
-        self.check_uuid=None
-        self.uuid=None
-    
-    def get(self):
-        return df, 200
-    
-    def post(self, uuid):
+        
+    def get(self, uuid):
         for id_ in range(len(df)):
             if (df[id_]["uuid"] == uuid):
                 return df[id_], 201
