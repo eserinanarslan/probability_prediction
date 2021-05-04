@@ -31,26 +31,26 @@ data['Calibrated Naive Bayes (Isotonic)'] = data['Calibrated Naive Bayes (Isoton
 data['Calibrated Naive Bayes (Sigmoid)'] = data['Calibrated Naive Bayes (Sigmoid)'].apply(lambda x: '{:.5f}'.format(x))
 
 
-
 df = data.to_json(orient="records")
 df = json.loads(df)
-
 
 
 app = Flask(__name__)
 api = Api(app)
 
+
 class ProbabilityPrediction(Resource):
-        
+
     def get(self, uuid):
-        for id_ in range(len(df)):
-            if (df[id_]["uuid"] == uuid):
-                return df[id_], 201
+        list_id = [idx for idx in range(len(df)) if uuid == df[idx]["uuid"]]
+        if len(list_id) < 1:
+            return "uuid is not found", 404
+        else:
+            return df[list_id[0]], 201
 
 
-api.add_resource(ProbabilityPrediction, "/result", "/result/", "/result/<uuid>")
+
+api.add_resource(ProbabilityPrediction, "/result", "/result/", "/result/uuid=<uuid>")
 
 if __name__ == '__main__':
     app.run()
-
-
