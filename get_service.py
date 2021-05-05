@@ -2,32 +2,30 @@ import pandas as pd
 import os
 
 import sqlite3 as sql
-
-from flask_restful import Resource, Api
 import flask
 from flask import request, jsonify
+import configparser
+
 
 import json
-
 import warnings
-
 warnings.filterwarnings("ignore")
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 
+config = configparser.ConfigParser()
+config.sections()
+config.read('config.ini')
 
 conn = sql.connect(os.getcwd()+"/src/df_all_results.db")
 data = pd.read_sql("SELECT * FROM df_all_results", conn).drop(columns="index")
 data.fillna("NA", inplace=True)
-
-
 
 data['Random Forest Probability'] = data['Random Forest Probability'].apply(lambda x: '{:.5f}'.format(x))
 data['Calibrated Random Forest Probability'] = data['Calibrated Random Forest Probability'].apply(lambda x: '{:.5f}'.format(x))
 data['Naive Bayes'] = data['Naive Bayes'].apply(lambda x: '{:.5f}'.format(x))
 data['Calibrated Naive Bayes (Isotonic)'] = data['Calibrated Naive Bayes (Isotonic)'].apply(lambda x: '{:.5f}'.format(x))
 data['Calibrated Naive Bayes (Sigmoid)'] = data['Calibrated Naive Bayes (Sigmoid)'].apply(lambda x: '{:.5f}'.format(x))
-
 
 
 df = data.to_json(orient="records")
@@ -65,4 +63,6 @@ def api_id():
     else:
         return jsonify(results)
 
-app.run(host="127.0.0.1", port=int("1000"), debug=True)
+app.run(host=config["Service"]["Host"], port=int(config["Service"]["Port"]), debug=True)
+
+
