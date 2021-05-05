@@ -11,4 +11,4 @@ After prediction, you can create rest api to see results. "get_service.py" folde
 
 After this process, you can use postman to test. There are two different get service. One of them responses the whole result dataframe as a jason message. This method doesn't need any parameter. The other one takes uuid as a parameter return its results.
 
-You can find postman collection on collection.
+You can find postman collection on collection folder.
